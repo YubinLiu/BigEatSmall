@@ -10,7 +10,7 @@ import android.graphics.Paint;
 public class Rocker {
     public double degreesByNormalSystem = Double.NaN;//一般坐标系下的角度
     public double rad = Double.NaN;//当前遥感的弧度
-    int rockerColor = Color.GREEN;
+    int rockerColor = Color.argb(0, 50, 50, 50);
     //定义两个圆形的中心点坐标与半径
     private static final float rockerCenterXMarginRight4ScreenWidthPercent = 0.005f;//摇杆右边界宽度相对于屏幕宽度百分比
     private static final float rockerCenterYMarginBottom4ScreenHeightPercent = 0.005f;//摇杆右边界高度相对于屏幕百分比

@@ -125,7 +125,7 @@ public class ReadyView extends BaseView{
     @Override
     public void initBitmap() {
         // TODO Auto-generated method stub
-        background = BitmapFactory.decodeResource(getResources(), R.drawable.bg_01);
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         text = BitmapFactory.decodeResource(getResources(), R.drawable.text);
         planefly = BitmapFactory.decodeResource(getResources(), R.drawable.fly);
         button = BitmapFactory.decodeResource(getResources(), R.drawable.button);

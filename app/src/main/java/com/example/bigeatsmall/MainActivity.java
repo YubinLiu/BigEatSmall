@@ -1,6 +1,5 @@
 package com.example.bigeatsmall;
 
-import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +8,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import ConstantUtil.ConstantUtil;
 import sounds.GameSoundsPool;
+import view.EndView;
 import view.MainView;
 import view.ReadyView;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private EndView endView;
+    private EndView endView;
     private MainView mainView;
     private ReadyView readyView;
     private GameSoundsPool sounds;
@@ -24,14 +24,13 @@ public class MainActivity extends AppCompatActivity {
             if(msg.what == ConstantUtil.TO_MAIN_VIEW){
                 toMainView();
             }
-            /*
-            else  if(msg.what == ConstantUtil.TO_END_VIEW){
+            else if(msg.what == ConstantUtil.TO_END_VIEW){
                 toEndView(msg.arg1);
             }
-            else  if(msg.what == ConstantUtil.END_GAME){
+            else if(msg.what == ConstantUtil.END_GAME){
                 endGame();
             }
-            */
+
         }
     };
     @Override
@@ -52,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         }
         setContentView(mainView);
         readyView = null;
-        //endView = null;
+        endView = null;
     }
-    /*
+
     //显示游戏结束的界面
     public void toEndView(int score){
         if(endView == null){
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(endView);
         mainView = null;
     }
+
     //结束游戏
     public void endGame(){
         if(readyView != null){
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
         this.finish();
     }
-    */
+
     //getter和setter方法
     public Handler getHandler() {
         return handler;

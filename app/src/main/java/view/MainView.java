@@ -1,17 +1,23 @@
 package view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import com.example.bigeatsmall.R;
 import java.util.ArrayList;
+
+import ConstantUtil.ConstantUtil;
 import direction.Rocker;
 import object.BackgroundImage;
 import object.EnemyFishFromLeft;
@@ -20,7 +26,8 @@ import object.GameImage;
 import object.MyFish;
 import sounds.GameSoundsPool;
 
-public class MainView extends BaseView {
+public class MainView extends BaseView
+        implements DialogInterface.OnClickListener{
     private SurfaceHolder sfh;
     private Paint paint;
     private Thread th;
@@ -30,8 +37,8 @@ public class MainView extends BaseView {
     public MyFish myFish;
     public Rocker rocker;
 
-    private Bitmap enemyFishLeftImage;
-    private Bitmap enemyFishRightImage;
+    private Bitmap[] enemyFishLeftImage = new Bitmap[5];
+    private Bitmap[] enemyFishRightImage = new Bitmap[6];
     private Bitmap background;
     private Bitmap background2;
 
@@ -40,10 +47,32 @@ public class MainView extends BaseView {
     private Bitmap twoLevelBitmap;  //二级缓存
 
     private void init() {
-        enemyFishLeftImage = BitmapFactory.decodeResource(getResources(),
-                R.drawable.enemies_plane_small);
-        enemyFishRightImage = BitmapFactory.decodeResource(getResources(),
-                R.drawable.enemies_plane_small);
+        for (int i = 0; i < 5; i++) {
+            enemyFishLeftImage[0] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish_size1);
+            enemyFishLeftImage[1] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish_size2);
+            enemyFishLeftImage[2] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish_size3);
+            enemyFishLeftImage[3] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish_size4);
+            enemyFishLeftImage[4] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish_size5);
+        }
+        for (int i = 0; i < 6; i++) {
+            enemyFishRightImage[0] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish1_size1);
+            enemyFishRightImage[1] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish1_size2);
+            enemyFishRightImage[2] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish1_size3);
+            enemyFishRightImage[3] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish2);
+            enemyFishRightImage[4] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish1_size4);
+            enemyFishRightImage[5] = BitmapFactory.decodeResource(getResources(),
+                    R.drawable.enemyfish1_size5);
+        }
         background = BitmapFactory.decodeResource(getResources(),
                 R.drawable.background);
         background2 = BitmapFactory.decodeResource(getResources(),
@@ -89,6 +118,8 @@ public class MainView extends BaseView {
         th.start();
     }
 
+
+
     Matrix matrix = new Matrix();
     float waterY = 0;
 
@@ -117,20 +148,64 @@ public class MainView extends BaseView {
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.stop();
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this.getContext());
+
+            alert.setTitle("确定退出吗？");
+            alert.setPositiveButton("确定", this);
+            alert.setNegativeButton("取消", this);
+            alert.create();
+
+            //点击对话框以外的部分不消失
+            alert.setCancelable(false);
+
+            alert.show();
+
+            return false;
+        }
+
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 游戏逻辑
-     */
-    private void logic() {
+    private boolean isStop = false;
+
+    public void stop() {
+        isStop = true;
     }
 
+    public void start() {
+        isStop = false;
+        th.interrupt();
+    }
+
+    public static int mark = 0;
+
     public void run() {
-        int enemy_count = 0;
+        if (!MyFish.isAlive) {
+            flag = false;
+        }
+        int enemy_count_left = 0;
+        int enemy_count_right = 0;
         Paint p1 = new Paint();
+        Paint p2 = new Paint();
+        p2.setColor(Color.BLACK);
+        p2.setTextSize(80);
+        p2.setAntiAlias(true);
+        p2.setDither(true);
         try {
             while (flag) {
+
+                while (isStop) {
+                    try {
+                        Thread.sleep(1000000000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 Canvas newCanvas = new Canvas(twoLevelBitmap);
 
                 for (GameImage image :
@@ -145,17 +220,56 @@ public class MainView extends BaseView {
                             image.getX(), image.getY(), p1);
                 }
 
-                if (enemy_count == 50) {
-                    enemy_count = 0;
-                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage));
+                if (enemy_count_left == 10) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                 }
-                if (enemy_count == 40) {
-                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage));
+                if (enemy_count_left == 100) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[1]));
                 }
-                enemy_count++;
+                if (enemy_count_left == 300) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[2]));
+                }
+                if (enemy_count_left == 400) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[3]));
+                }
+                if (enemy_count_left == 600) {
+                    enemy_count_left = 0;
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[4]));
+                }
+
+                if (enemy_count_right == 10) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
+                }
+                if (enemy_count_right == 100) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[1]));
+                }
+                if (enemy_count_right== 200) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[2]));
+                }
+                if (enemy_count_right== 400) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[3]));
+                }
+                if (enemy_count_right == 500) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[4]));
+                }
+                if (enemy_count_right == 800) {
+                    enemy_count_right = 0;
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[5]));
+                }
+
+                enemy_count_left++;
+                enemy_count_right++;
+
+                //分数
+                newCanvas.drawText("积分: " + mark, 0, 80, p2);
 
                 //绘制大圆
                 rocker.draw(newCanvas);
+
                 //绘制自己的鱼
                 myFish.draw(this, newCanvas, fishBmp, matrix, waterY);
 
@@ -164,14 +278,14 @@ public class MainView extends BaseView {
                 canvas.drawBitmap(twoLevelBitmap, 0, 0, p1);
 
                 sfh.unlockCanvasAndPost(canvas);
-
-
-                Thread.sleep(50);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Message message = new Message();
+        message.what = 	ConstantUtil.TO_END_VIEW;
+        message.arg1 = mark;
+        mainActivity.getHandler().sendMessage(message);
     }
 
     /**
@@ -185,5 +299,14 @@ public class MainView extends BaseView {
      */
     public void surfaceDestroyed(SurfaceHolder holder) {
         flag = false;
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == -2) {
+            this.start();
+        } else {
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 }

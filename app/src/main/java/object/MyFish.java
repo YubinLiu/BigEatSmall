@@ -5,8 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Message;
 import android.view.View;
 import java.util.Random;
+
+import ConstantUtil.ConstantUtil;
 import view.MainView;
 
 /**
@@ -24,13 +27,16 @@ public class MyFish implements GameImage{
 
     float distancePerSecond = 50;
     static final int PIC_LENGTH = 10;
-    float width;
-    float height;
+    public static float width;
+    public static float height;
     float x,y;
     int currentFrame = 0;
     double degrees;
-    Bitmap bitmap;
-    int x1, y1;
+    public static Bitmap bitmap;
+    public static int grow = 0;
+
+    public static boolean isAlive = true;		// 判断是否存活
+
     void updateFrame(){
         currentFrame++;
         if (currentFrame >= PIC_LENGTH) {
@@ -55,7 +61,11 @@ public class MyFish implements GameImage{
         checkBorder(view,waterY);
         width = bitmap.getWidth();
         height = bitmap.getHeight();
-        canvas.drawBitmap(bitmap, x, y, new Paint());
+        //canvas.drawBitmap(bitmap, x, y, new Paint());
+        canvas.drawBitmap(bitmap,
+                new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+                new Rect((int)x, (int)y, (int)(x + width + grow), (int)(y + height + grow)),
+                new Paint());
     }
 
     private void generateBmpWithDegree(Bitmap[] fishBmp,Matrix matrix,  double degrees2) {
@@ -86,9 +96,17 @@ public class MyFish implements GameImage{
         }
     }
 
+    public static Bitmap eatAndBigger(Bitmap bitmap, float x, float y) {
+        Matrix matrix = new Matrix();
+        matrix.postScale((1 + x), (1 + y)); //长和宽放大缩小的比例
+        Bitmap resizeBmp =
+                Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+        return resizeBmp;
+    }
+
     @Override
     public Bitmap getBitmap() {
-        return null;
+        return bitmap;
     }
 
     @Override
@@ -100,4 +118,5 @@ public class MyFish implements GameImage{
     public float getY() {
         return y;
     }
+
 }
