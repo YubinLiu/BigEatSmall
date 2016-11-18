@@ -12,6 +12,7 @@ import com.example.bigeatsmall.MainActivity;
 import com.example.bigeatsmall.R;
 
 import ConstantUtil.ConstantUtil;
+import object.MyFish;
 import sounds.GameSoundsPool;
 
 /**
@@ -78,7 +79,7 @@ public class EndView extends BaseView{
             if(x > button_x && x < button_x + button.getWidth()
                     && y > button_y && y < button_y + button.getHeight())
             {
-                sounds.playSound(7, 0);
+                //sounds.playSound(7, 0);
                 isBtChange = true;
                 drawSelf();
                 mainActivity.getHandler().sendEmptyMessage(ConstantUtil.TO_MAIN_VIEW);
@@ -87,7 +88,7 @@ public class EndView extends BaseView{
             else if(x > button_x && x < button_x + button.getWidth()
                     && y > button_y2 && y < button_y2 + button.getHeight())
             {
-                sounds.playSound(7, 0);
+                //sounds.playSound(7, 0);
                 isBtChange2 = true;
                 drawSelf();
                 threadFlag = false;
@@ -127,7 +128,7 @@ public class EndView extends BaseView{
     @Override
     public void initBitmap() {
         // TODO Auto-generated method stub
-        background = BitmapFactory.decodeResource(getResources(),R.drawable.bg_01);
+        background = BitmapFactory.decodeResource(getResources(),R.drawable.background2);
         button = BitmapFactory.decodeResource(getResources(), R.drawable.button);
         button2 = BitmapFactory.decodeResource(getResources(),R.drawable.button2);
         scalex = screen_width / background.getWidth();

@@ -198,6 +198,10 @@ public class MainView extends BaseView
         try {
             while (flag) {
 
+                if (!MyFish.isAlive) {
+                    flag = false;
+                }
+
                 while (isStop) {
                     try {
                         Thread.sleep(1000000000);
@@ -222,18 +226,21 @@ public class MainView extends BaseView
 
                 if (enemy_count_left == 10) {
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                 }
-                if (enemy_count_left == 100) {
+                if (enemy_count_left == 200) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[1]));
                 }
-                if (enemy_count_left == 300) {
+                if (enemy_count_left == 400) {
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[2]));
                 }
-                if (enemy_count_left == 400) {
+                if (enemy_count_left == 600) {
+                    gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[3]));
                 }
-                if (enemy_count_left == 600) {
+                if (enemy_count_left == 800) {
                     enemy_count_left = 0;
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[0]));
                     gameImages.add(new EnemyFishFromLeft(enemyFishLeftImage[4]));
@@ -241,21 +248,25 @@ public class MainView extends BaseView
 
                 if (enemy_count_right == 10) {
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                 }
-                if (enemy_count_right == 100) {
+                if (enemy_count_right == 300) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[1]));
                 }
-                if (enemy_count_right== 200) {
+                if (enemy_count_right== 600) {
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[2]));
                 }
-                if (enemy_count_right== 400) {
+                if (enemy_count_right== 900) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[3]));
                 }
-                if (enemy_count_right == 500) {
+                if (enemy_count_right == 1200) {
+                    gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[4]));
                 }
-                if (enemy_count_right == 800) {
+                if (enemy_count_right == 1500) {
                     enemy_count_right = 0;
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[0]));
                     gameImages.add(new EnemyFishFromRight(enemyFishRightImage[5]));

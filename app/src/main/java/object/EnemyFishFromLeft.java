@@ -95,7 +95,7 @@ public class EnemyFishFromLeft implements GameImage{
             if (MyFish.width * MyFish.height < width * height) {
                 MyFish.isAlive = false;
             } else {
-                MyFish.grow += 0.5;
+                MyFish.grow += 5;
                 MainView.mark += 10;
                 MainView.gameImages.remove(this);
             }

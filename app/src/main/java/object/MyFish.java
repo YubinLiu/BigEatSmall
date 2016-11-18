@@ -44,11 +44,6 @@ public class MyFish implements GameImage{
         }
     }
 
-    boolean beCatched(float touchx,float touchy){
-        Rect rect = new Rect((int)x,(int)y,(int)(x+width),(int)(y+height));
-        return rect.contains((int)touchx,(int)touchy);
-    }
-
     public void draw(MainView view, Canvas canvas, Bitmap[] fishBmp, Matrix matrix, float waterY ){
         updateFrame();
         if(view.rocker.WORKING&&!Double.isNaN(view.rocker.degreesByNormalSystem)){
@@ -94,14 +89,6 @@ public class MyFish implements GameImage{
         if(y>=view.getHeight()-height){
             y=view.getHeight()-height;
         }
-    }
-
-    public static Bitmap eatAndBigger(Bitmap bitmap, float x, float y) {
-        Matrix matrix = new Matrix();
-        matrix.postScale((1 + x), (1 + y)); //长和宽放大缩小的比例
-        Bitmap resizeBmp =
-                Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
-        return resizeBmp;
     }
 
     @Override
